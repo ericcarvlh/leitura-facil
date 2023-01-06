@@ -1,25 +1,19 @@
 package com.example.leiturafacil;
 
-import static com.example.leiturafacil.JSONHandler.iniciaRequisicao;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MainActivity extends AppCompatActivity {
     Button buttonPesquisar;
@@ -54,26 +48,19 @@ public class MainActivity extends AppCompatActivity {
                     conexao.setRequestProperty("Accept-Language", acceptLanguage);
                     conexao.setRequestProperty("Referer", referer);
 
-                    TaskRunner taskRunner = new TaskRunner();
-                    taskRunner.executeAsync(new ColetaDadosLivro(conexao), (data) -> {
-                        textViewQuantidadeLivro.setText(String.format("Há um total de %s livros.", data));
-                    });
-
-                    /*ExecutorService executor = Executors.newSingleThreadExecutor();
+                    ExecutorService executor = Executors.newSingleThreadExecutor();
                     Handler handler = new Handler(Looper.getMainLooper());
                     executor.execute(() -> {
-                        String quantidadeLivro = "";
                         try {
                             JSONObject jsonObject = new JSONObject(JSONHandler.iniciaRequisicao(conexao));
-                            quantidadeLivro = jsonObject.getJSONObject("paginacao").get("total_livros").toString();
+                            String quantidadeLivro = jsonObject.getJSONObject("paginacao").get("total_livros").toString();
+                            handler.post(() -> textViewQuantidadeLivro.setText(String.format("Há um total de %s livro(s).", quantidadeLivro)));
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
                         }
-                        String finalQuantidadeLivro = quantidadeLivro;
-                        handler.post(() -> {
-                            textViewQuantidadeLivro.setText(String.format("Há um total de %s livros.", finalQuantidadeLivro));
-                        });
-                    });*/
+                    });
+
+                    executor.shutdown();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
