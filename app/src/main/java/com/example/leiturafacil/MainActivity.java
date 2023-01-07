@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("urlParaChamada", urlParaChamada.toString());
 
-                /*HttpURLConnection conexao = (HttpURLConnection) urlParaChamada.openConnection();
+                HttpURLConnection conexao = (HttpURLConnection) urlParaChamada.openConnection();
                 conexao.setRequestProperty("User-Agent", userAgent);
                 conexao.setRequestProperty("Accept", accept);
                 conexao.setRequestProperty("Accept-Language", acceptLanguage);
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                executor.shutdown();*/
+                executor.shutdown();
             } catch (IOException e) {
                 e.printStackTrace();
             }
